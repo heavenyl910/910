@@ -1,0 +1,12 @@
+{
+  "name": "demons-playlist",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": ["bot", "voice", "shared", "webapp", "assets", "scripts"],
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "node-telegram-bot-api": "^0.63.0"
+  }
+}
