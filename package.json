@@ -2,11 +2,21 @@
   "name": "demons-playlist",
   "version": "0.1.0",
   "private": true,
-  "workspaces": ["bot", "voice", "shared", "webapp", "assets", "scripts"],
+  "workspaces": [
+    "bot",
+    "voice",
+    "shared",
+    "webapp",
+    "assets",
+    "scripts"
+  ],
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "start": "node bot/index.js"
   },
   "dependencies": {
-    "node-telegram-bot-api": "^0.63.0"
+    "dotenv": "^17.2.1",
+    "node-telegram-bot-api": "^0.66.0",
+    "telegram": "^2.26.22"
   }
 }
