@@ -1,22 +1,10 @@
-const fs = require('fs');
-const path = require('path');
+// credentials.ts
+const credentials = new Map<string, unknown>();
 
-function loadCredentials(filePath = path.join(__dirname, '..', 'Credentials.env')) {
-  if (!fs.existsSync(filePath)) return {};
-  const data = {};
-  const content = fs.readFileSync(filePath, 'utf8');
-  for (const line of content.split(/\r?\n/)) {
-    const match = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)\s*$/);
-    if (match) {
-      const key = match[1];
-      const value = match[2];
-      data[key] = value;
-      if (process.env[key] === undefined) {
-        process.env[key] = value;
-      }
-    }
-  }
-  return data;
+export function setCred<T>(name: string, value: T): void {
+  credentials.set(name, value);
 }
 
-module.exports = { loadCredentials };
+export function getCred<T = unknown>(name: string): T | undefined {
+  return credentials.get(name) as T | undefined;
+}

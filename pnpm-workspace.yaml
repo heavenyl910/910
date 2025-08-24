@@ -1,0 +1,6 @@
+packages:
+  - "bot"
+  - "api"
+  - "webapp"
+  - "shared"
+  - "voice"

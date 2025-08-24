@@ -1,0 +1,9 @@
+services:
+  api:
+    build: ..
+    command: pnpm --filter @910/api dev
+    ports: [ "3001:3001" ]
+  bot:
+    build: ..
+    command: pnpm --filter @910/bot dev
+    environment: [ "BOT_TOKEN=${BOT_TOKEN}" ]

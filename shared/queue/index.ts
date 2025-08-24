@@ -1,48 +1,25 @@
-const { randomUUID } = require('crypto');
+export type Track = { id: string; title: string; url?: string; [k: string]: unknown };
 
-/**
- * Simple in-memory queue map.
- * @type {Map<number, QueueState>}
- */
-const queues = new Map();
+const queues = new Map<number | string, Track[]>();
 
-/**
- * Add a track to the queue. Creates a queue for the chat if needed.
- * @param {number} chatId
- * @param {Partial<Track>} track
- * @returns {QueueState}
- */
-function addTrack(chatId, track) {
-  const state = queues.get(chatId) || {
-    chatId,
-    now: undefined,
-    next: [],
-    volume: 100,
-    muted: false,
-    repeat: 'off',
-    shuffle: false,
-  };
-  const full = { id: randomUUID(), duration: 0, source: 'http', title: 'Unknown', ...track };
-  if (!state.now) {
-    state.now = full;
-  } else {
-    state.next.push(full);
-  }
-  queues.set(chatId, state);
-  return state;
+export function addToQueue(chatId: number | string, track: Track) {
+  const q = queues.get(chatId) ?? [];
+  q.push(track);
+  queues.set(chatId, q);
 }
 
-/**
- * Shift to next track.
- * @param {number} chatId
- * @returns {Track|undefined}
- */
-function nextTrack(chatId) {
-  const state = queues.get(chatId);
-  if (!state) return undefined;
-  const next = state.next.shift();
-  state.now = next;
+export function getQueue(chatId: number | string): Track[] {
+  return queues.get(chatId) ?? [];
+}
+
+export function clearQueue(chatId: number | string): void {
+  queues.delete(chatId);
+}
+
+export function popNext(chatId: number | string): Track | undefined {
+  const q = queues.get(chatId);
+  if (!q || q.length === 0) return undefined;
+  const next = q.shift();
+  queues.set(chatId, q);
   return next;
 }
-
-module.exports = { addTrack, nextTrack, queues };
